@@ -8,7 +8,7 @@ const userSchemas = {
     password: Joi.string().required()
   }),
   get: Joi.object().keys({
-    id: Joi.number().required()
+    id: Joi.string().required().uuid()
   }),
   update: Joi.object().keys({
     nome: Joi.string().min(3).max(50).optional(),
