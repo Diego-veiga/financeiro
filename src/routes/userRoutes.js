@@ -14,5 +14,18 @@ router.get(
   authRequired,
   userControllers.index
 );
+router.put(
+  '/:id',
+  requestValidate(userSchema.get, 'params'),
+  requestValidate(userSchema.update, 'body'),
+  authRequired,
+  userControllers.update
+);
+router.delete(
+  '/:id',
+  requestValidate(userSchema.get, 'params'),
+  authRequired,
+  userControllers.delete
+);
 
 export default router;

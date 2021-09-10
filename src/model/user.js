@@ -72,4 +72,8 @@ export default class User extends Model {
   async passwordValid(password) {
     return bcrypt.compare(password, this.password_hash);
   }
+
+  static associate(models) {
+    this.hasMany(models.Creditor, { foreignKey: 'userId' });
+  }
 }
