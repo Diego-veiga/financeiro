@@ -1,0 +1,244 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API controle financeiro",
+    "description": "Essa API tem como objetivo realizar o controle financeiro",
+    "contact": {
+      "email": "diegoroberto27@hotmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "descriptio": "API de homologação"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Cadastro de Usuários",
+        "description": "Essa rota é responsável pelo cadastro de usuarios",
+        "tags": ["user"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "nome": "joao",
+                    "sobrenome": "silva",
+                    "email": "exemplo@exemplo.com",
+                    "password": "j123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "usuario cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os usuarios",
+        "description": "Essa rota tem como objetivo listar todos os usuarios",
+        "tags": ["user"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/users"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Exibir um usuário",
+        "description": "Essa rota tem como objetivo exibir um usuario",
+        "tags": ["user"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto para busca",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar os usuarios",
+        "description": "Essa rota tem como objetivo atualizar um usuário",
+        "tags": ["user"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "nome": "joao",
+                    "sobrenome": "silva",
+                    "email": "exemplo@exemplo.com",
+                    "password": "j123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto para atualizar",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "sumary": "Rota para excluir um usuario",
+        "description": "Essa rota tem como objeto excluir um usuario",
+        "tags": ["user"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do usuario para exclusão",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "Produto ja existe"
+          },
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "users": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "sobrenome": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

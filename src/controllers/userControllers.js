@@ -4,8 +4,8 @@ import User from '../model/user';
 class UserController {
   async store(req, res) {
     try {
-      await User.create(req.body);
-      return res.status(200).json({ message: 'Usuario criado com sucesso' });
+      const newUser = await User.create(req.body);
+      return res.status(200).json(newUser);
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map(err => err.message)
@@ -57,7 +57,6 @@ class UserController {
       const userUpdated = await user.update(req.body);
       return res.status(200).json(userUpdated);
     } catch (e) {
-      console.log('---error', e);
       return res.status(400).json({
         errors: e.errors.map(err => err.message)
       });

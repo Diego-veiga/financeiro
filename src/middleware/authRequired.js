@@ -19,13 +19,13 @@ export default async (req, res, next) => {
       }
     });
     if (!user) {
-      return res.status(400).json('Usuario e senha inválidos');
+      return res.status(401).json('Usuario e senha inválidos');
     }
     req.userId = id;
     req.userEmail = email;
 
     return next();
   } catch (e) {
-    return res.status(400).json({ errors: 'token inválido' });
+    return res.status(401).json({ errors: 'token inválido' });
   }
 };
