@@ -3,8 +3,9 @@ import databaseConfig from '../config/database';
 
 import User from '../model/user';
 import Creditor from '../model/creditor';
+import Bill from '../model/bills';
 
-const models = [User, Creditor];
+const models = [User, Creditor, Bill];
 
 const connection = new Sequelize(databaseConfig);
 

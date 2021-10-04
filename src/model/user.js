@@ -75,5 +75,6 @@ export default class User extends Model {
 
   static associate(models) {
     this.hasMany(models.Creditor, { foreignKey: 'userId' });
+    this.hasMany(models.Bill, { foreignKey: 'userId' });
   }
 }

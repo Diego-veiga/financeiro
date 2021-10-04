@@ -15,6 +15,52 @@
     }
   ],
   "paths": {
+    "/token": {
+      "post": {
+        "summary": "Obter token",
+        "description": "Essa rota é responsável pela geração de token",
+        "tags": ["token"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              },
+              "examples": {
+                "auth": {
+                  "value": {
+                    "email": "exemplo@exemplo.com",
+                    "password": "j123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "usuario cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user": {
       "post": {
         "summary": "Cadastro de Usuários",
@@ -211,6 +257,197 @@
           }
         }
       }
+    },
+    "/creditor": {
+      "post": {
+        "summary": "Cadastro de Credores",
+        "description": "Essa rota é responsável pelo cadastro de credores",
+        "tags": ["creditor"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/creditors"
+              },
+              "examples": {
+                "creditor": {
+                  "value": {
+                    "nome": "bar do zé"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Usuario não encontrado"
+          },
+          "200": {
+            "description": "usuario cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os credores",
+        "description": "Essa rota tem como objetivo listar todos os credores",
+        "tags": ["creditor"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "credor não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/creditors"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditor/{id}": {
+      "get": {
+        "summary": "Exibir um credor",
+        "description": "Essa rota tem como objetivo exibir um credor",
+        "tags": ["creditor"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do credor para busca",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Credor e senha inválidos"
+          },
+          "400": {
+            "description": "Credor não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/creditors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar os credores",
+        "description": "Essa rota tem como objetivo atualizar um credores",
+        "tags": ["creditor"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/creditors"
+              },
+              "examples": {
+                "creditor": {
+                  "value": {
+                    "nome": "joao"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do credor para atualizar",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Credor não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/creditors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "sumary": "Rota para excluir um credor",
+        "description": "Essa rota tem como objeto excluir um credor",
+        "tags": ["creditor"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do credor para exclusão",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "credor ja existe"
+          },
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -228,6 +465,33 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "creditors": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          }
+        }
+      },
+      "auth": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "token": {
+        "type": "object",
+        "properties": {
+          "token": {
             "type": "string"
           }
         }

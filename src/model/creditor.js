@@ -32,5 +32,6 @@ export default class Creditor extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'userId' });
+    this.hasMany(models.Bill, { foreignKey: 'creditor_id' });
   }
 }
