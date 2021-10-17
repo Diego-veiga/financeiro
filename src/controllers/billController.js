@@ -49,9 +49,13 @@ class BillControllers {
           bills.push(bill);
         }
       }
-
-      const newsBills = await Bill.bulkCreate(bills);
-      return res.status(200).json(newsBills);
+      const newBillss = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const bill of bills) {
+        const newBill = await Bill.create(bill);
+        newBillss.push(newBill);
+      }
+      return res.status(200).json(newBillss);
     } catch (e) {
       return res.status(400).json({ errors: e.errors.map(err => err.message) });
     }
@@ -141,9 +145,47 @@ class BillControllers {
       if (!bill) {
         return res.status(200).json({ message: 'Conta não encontrada' });
       }
-
-      return res.status(200).json(bills);
+      const billUpdated = await bill.update(req.body);
+      return res.status(200).json(billUpdated);
     } catch (error) {
+      return res.status(400).json({ errors: e.errors.map(err => err.message) });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const bill = await Bill.findOne({
+        where: {
+          [Op.and]: [{ id: req.params.id }, { active: true }]
+        }
+      });
+      if (!bill) {
+        return res.status(200).json({ message: 'Conta não encontrada' });
+      }
+      bill.active = 0;
+      await bill.save();
+      return res.status(200).json({ message: 'Conta excluída com sucesso ' });
+    } catch (error) {
+      return res.status(400).json({ errors: e.errors.map(err => err.message) });
+    }
+  }
+
+  async total(req, res) {
+    try {
+      const { type } = req.params;
+      const bill = await Bill.findAll({
+        where: {
+          [Op.and]: [{ user_id: req.userId }, { active: true }, { type_bill: type }]
+        }
+      });
+      if (!bill.length) {
+        return res
+          .status(200)
+          .json({ message: 'Não foram encontradas contas para este usuário' });
+      }
+      const total = bill.reduce((totalBill, b) => (totalBill += b.value), 0);
+      return res.status(200).json({ total });
+    } catch (e) {
       return res.status(400).json({ errors: e.errors.map(err => err.message) });
     }
   }

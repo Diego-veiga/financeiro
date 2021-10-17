@@ -5,6 +5,11 @@ export default class Bill extends Model {
   static init(sequelize) {
     super.init(
       {
+        // id: {
+        //   primaryKey: true,
+        //   type: Sequelize.UUID,
+        //   autoIncrement: true
+        // },
         description: {
           type: Sequelize.STRING,
           defaultValue: '',

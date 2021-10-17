@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import userRouter from './src/routes/userRoutes';
 import tokenRouter from './src/routes/tokenRouter';
 import creditorRouter from './src/routes/creditorRouter';
+import totalRouter from './src/routes/totalRouter';
 import './src/database';
 import swaggerJson from './swagger.json';
 import billRouter from './src/routes/billRouter';
@@ -24,10 +25,11 @@ class App {
   }
 
   router() {
-    this.app.use('/user', userRouter);
-    this.app.use('/token', tokenRouter);
-    this.app.use('/creditor', creditorRouter);
-    this.app.use('/bill', billRouter);
+    this.app.use('/user/', userRouter);
+    this.app.use('/token/', tokenRouter);
+    this.app.use('/creditor/', creditorRouter);
+    this.app.use('/bill/', billRouter);
+    this.app.use('/total/', totalRouter);
   }
 }
 

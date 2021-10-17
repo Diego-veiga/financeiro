@@ -4,10 +4,10 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('bills', {
       id: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.literal('uuid_generate_v4()')
+        defaultValue: DataTypes.UUIDV4
       },
       description: {
         type: Sequelize.STRING(100),
@@ -46,10 +46,8 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       type_bill: {
-        type: DataTypes.ENUM({
-          values: ['entry', 'output']
-        }),
-        allowNull: false
+        type: Sequelize.ENUM('entry', 'output'),
+        defaultValue: 'entry'
       },
       expiration_date: {
         type: Sequelize.DATE,

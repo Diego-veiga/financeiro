@@ -6,7 +6,7 @@ import authRequired from '../middleware/authRequired';
 
 const router = new Router();
 
-router.post('/', requestValidate(userSchema.post, 'body'), authRequired, userControllers.store);
+router.post('/', requestValidate(userSchema.post, 'body'), userControllers.store);
 router.get('/', authRequired, userControllers.show);
 router.get(
   '/:id',

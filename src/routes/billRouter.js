@@ -14,5 +14,18 @@ router.get(
   authRequired,
   billController.show
 );
+router.put(
+  '/:id',
+  requestValidate(billSchema.show, 'params'),
+  requestValidate(billSchema.update, 'body'),
+  authRequired,
+  billController.update
+);
+router.delete(
+  '/:id',
+  requestValidate(billSchema.show, 'params'),
+  authRequired,
+  billController.delete
+);
 
 export default router;
