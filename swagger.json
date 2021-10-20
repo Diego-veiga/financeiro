@@ -448,6 +448,207 @@
           }
         }
       }
+    },
+    "/bill": {
+      "post": {
+        "summary": "Cadastro de Contas Financeiras",
+        "description": "Essa rota é responsável pelo contas financeiras",
+        "tags": ["Contas Financeiras"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bill"
+              },
+              "examples": {
+                "creditor": {
+                  "value": {
+                    "description": "TIm",
+                    "value": 10.62,
+                    "total_installment": 2,
+                    "creditor_id": "5ebf2e34-2080-4f30-9b52-a25b5c83e40f",
+                    "type_bill": "output",
+                    "expiration_date": "2021-10-18"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "Credor não encontrado"
+          },
+          "200": {
+            "description": "usuario cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/bill"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos as contas Financeiras",
+        "description": "Essa rota tem como objetivo listar todos contas Financeiras",
+        "tags": ["Contas Financeiras"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Usuario e senha inválidos"
+          },
+          "400": {
+            "description": "credor não encontrado não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/bill"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bill/{id}": {
+      "get": {
+        "summary": "Exibir uma Conta Financeira",
+        "description": "Essa rota tem como objetivo exibir uma Conta Financeira",
+        "tags": ["Contas Financeiras"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da Conta Financeira para busca",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Conta financeira não encontrada "
+          },
+          "400": {
+            "description": "Credor não encontrado"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/bill"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar uma Conta Financeira",
+        "description": "Essa rota tem como objetivo atualizar uma Conta Financeira",
+        "tags": ["Contas Financeiras"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bill"
+              },
+              "examples": {
+                "creditor": {
+                  "value": {
+                    "description": "TIm",
+                    "value": 10.62,
+                    "total_installment": 2,
+                    "creditor_id": "5ebf2e34-2080-4f30-9b52-a25b5c83e40f",
+                    "type_bill": "output",
+                    "expiration_date": "2021-10-18"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da ContaFinanceira para atualizar",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "token inválido"
+          },
+          "400": {
+            "description": "Credor não encontrada"
+          },
+          "400": {
+            "description": "Conta Financeira não encontrada"
+          },
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/bill"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "sumary": "Rota para excluir uma Conta Financeira",
+        "description": "Essa rota tem como objeto excluir uma conta  financeira",
+        "tags": ["Contas Financeiras"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da Conta Financeira para exclusão",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "Conta Financeira não encontrada "
+          },
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -492,6 +693,29 @@
         "type": "object",
         "properties": {
           "token": {
+            "type": "string"
+          }
+        }
+      },
+      "bill": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "total_installment": {
+            "type": "number"
+          },
+          "creditor_id": {
+            "type": "string"
+          },
+          "type_bill": {
+            "type": "string"
+          },
+          "type_bill": {
             "type": "string"
           }
         }
